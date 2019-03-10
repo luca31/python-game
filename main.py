@@ -1,34 +1,22 @@
-class Entity:
-  def __init__(self, x, y, graphic):
-    self.x = x
-    self.y = y
-    self.graphic = graphic
+import json
 
-class Level:
-  def __init__(self, w, h):
-    self.w = w
-    self.h = h
-    self.entities = []
+class Game:
+  def __init__(self):
+    with open('game.json') as f:
+      data = json.load(f)
 
-  def add_entities(self, entities):
-    self.entities += entities
+    self.rooms = []
+    self.description = data["description"]
+    self.levels = int(data["levels"])
+    for x in range(self.levels):
+      self.rooms.append(Room(x))
 
-  def draw(self):
-    for y in range(self.h):
-      for x in range(self.w):
-        for e in self.entities:
-          if e.x == x and e.y == y:
-            print("[{}]".format(e.graphic), end = "")
-            break
-        else:
-          print("[ ]", end = "")
+class Room:
+  def __init__(self, n):
+    self.n = n
+    # leggere il file n.room
 
-      print()
 
-player = Entity(1, 3, "P")
-monster = Entity(3, 4, "M")
-level = Level(10, 10)
+game = Game()
 
-level.add_entities([player, monster])
-
-level.draw()
+print(game.description)
